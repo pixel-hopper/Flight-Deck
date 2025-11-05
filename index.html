@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Deck Abbreviations</title>
+    
+    <!-- Favicon with UFO emoji -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛸</text></svg>">
+    
+    <style>
+        :root {
+            --bg-color: #f4f4f4;
+            --text-color: #333;
+            --header-bg: #f2f2f2;
+            --border-color: #ddd;
+            --hover-color: #eee;
+            --input-bg: #fff;
+            --input-border: #ccc;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #1e1e1e;
+                --text-color: #e0e0e0;
+                --header-bg: #2d2d2d;
+                --border-color: #444;
+                --hover-color: #3a3a3a;
+                --input-bg: #2d2d2d;
+                --input-border: #555;
+            }
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0; 
+            padding: 20px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        h1 { 
+            text-align: center; 
+            font-size: 2em; 
+            margin-bottom: 20px; 
+            color: var(--text-color); 
+        }
+        
+        .container { 
+            width: 100%; 
+            max-width: 1100px; 
+        }
+        
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        
+        input[type="search"] {
+            width: 100%;
+            max-width: 600px;
+            padding: 12px;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            border: 2px solid var(--input-border);
+            border-radius: 5px;
+            box-sizing: border-box;
+            background-color: var(--input-bg);
+            color: var(--text-color);
+        }
+        
+        
+        .table-wrap {
+            margin: 15px 0;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            -ms-overflow-style: -ms-autohiding-scrollbar;
+            scrollbar-width: thin;
+        }
+        
+        /* Custom scrollbar for better appearance */
+        .table-wrap::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .table-wrap::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+        
+        .table-wrap::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+        
+        table {
+            width: 100%;
+            min-width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95em;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            table-layout: fixed;
+            border-spacing: 0;
+        }
+        
+        th, td {
+            padding: 8px 12px;
+            text-align: left;
+            border: 1px solid var(--border-color);
+            word-break: break-word;
+            vertical-align: middle;
+            line-height: 1.4;
+        }
+        
+        th {
+            background-color: var(--header-bg);
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+        }
+        
+        td.abbrev {
+            font-weight: 600;
+            text-transform: uppercase;
+            width: 20%;
+            min-width: 100px;
+            font-size: 0.95em;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            vertical-align: middle;
+        }
+        
+        
+        td.full {
+            width: 40%;
+            min-width: 150px;
+            vertical-align: middle;
+        }
+        
+        td.description {
+            width: 40%;
+            min-width: 200px;
+            vertical-align: middle;
+            text-align: left;
+        }
+        
+        /* Remove the last column styling as we're removing the copy buttons */
+        .copy-btn {
+            display: none;
+        }
+        
+        .section-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin: 20px 0 8px 0;
+            color: var(--text-color);
+        }
+        
+        .intro {
+            text-align: center;
+            opacity: 0.8;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            max-width: 800px;
+        }
+        
+        .row-hidden {
+            display: none !important;
+        }
+        
+        footer {
+            text-align: center;
+            font-size: 0.85em;
+            opacity: 0.7;
+            margin-top: 30px;
+            color: var(--text-color);
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+                min-width: 320px; /* Prevent horizontal scrolling on very small screens */
+            }
+            
+            h1 { 
+                font-size: 1.5em; 
+                margin: 10px 0;
+            }
+            
+            .container {
+                width: 100%;
+                max-width: 100%;
+                padding: 0;
+                overflow-x: hidden;
+            }
+            
+            .table-wrap {
+                margin: 10px -10px;
+                width: calc(100% + 20px);
+            }
+            
+            table {
+                font-size: 0.9em;
+                min-width: 100%;
+                table-layout: fixed;
+            }
+            
+            th, td {
+                padding: 8px 10px;
+                min-width: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            
+            /* Make the table more compact on small screens */
+            th, td {
+                padding: 6px 8px;
+            }
+            
+            /* Ensure table cells don't wrap or break layout */
+            td.abbrev {
+                width: 25%;
+                min-width: 80px;
+            }
+            
+            td.full {
+                width: 50%;
+                min-width: 120px;
+            }
+            
+            td:last-child {
+                width: 25%;
+                min-width: 80px;
+            }
+            
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Flight Deck Abbreviations</h1>
+    <div class="controls">
+        <input id="search" type="search" placeholder="Search abbreviation or meaning..." oninput="filterTables()">
+    </div>
+
+<div class="table-wrap">
+
+<table id="common"><thead><tr><th>Abbrev</th><th>Meaning</th><th>Description</th></tr></thead><tbody>
+<tr data-search='BAT Battery'><td class='abbrev'>BAT</td><td class='full'>Battery</td><td class='description'>Main aircraft battery power source</td></tr><tr data-search='GEN Generator'><td class='abbrev'>GEN</td><td class='full'>Generator</td><td class='description'>Engine-driven electrical generator</td></tr><tr data-search='APU Auxiliary Power Unit'><td class='abbrev'>APU</td><td class='full'>Auxiliary Power Unit</td><td class='description'>Provides power and air conditioning when engines are off</td></tr><tr data-search='APU GEN APU Generator'><td class='abbrev'>APU GEN</td><td class='full'>APU Generator</td><td class='description'>Electrical generator powered by the APU</td></tr><tr data-search='EXT PWR External Power'><td class='abbrev'>EXT PWR</td><td class='full'>External Power</td><td class='description'>Ground power connection for aircraft systems</td></tr><tr data-search='AC BUS AC Bus'><td class='abbrev'>AC BUS</td><td class='full'>AC Bus</td><td class='description'>Distributes alternating current power</td></tr><tr data-search='DC BUS DC Bus'><td class='abbrev'>DC BUS</td><td class='full'>DC Bus</td><td class='description'>Distributes direct current power</td></tr><tr data-search='TRU Transformer Rectifier Unit'><td class='abbrev'>TRU</td><td class='full'>Transformer Rectifier Unit</td><td class='description'>Converts AC power to DC power</td></tr><tr data-search='INV Inverter'><td class='abbrev'>INV</td><td class='full'>Inverter</td><td class='description'>Converts DC power to AC power</td></tr><tr data-search='ESS BUS Essential Bus'><td class='abbrev'>ESS BUS</td><td class='full'>Essential Bus</td><td class='description'>Powers critical flight systems during emergencies</td></tr><tr data-search='BUS TIE Bus Tie Switch'><td class='abbrev'>BUS TIE</td><td class='full'>Bus Tie Switch</td><td class='description'>Connects or isolates electrical busses</td></tr><tr data-search='ELEC Electrical System'><td class='abbrev'>ELEC</td><td class='full'>Electrical System</td><td class='description'>Master control for aircraft electrical systems</td></tr><tr data-search='STBY PWR Standby Power'><td class='abbrev'>STBY PWR</td><td class='full'>Standby Power</td><td class='description'>Backup power source for essential systems</td></tr><tr data-search='ENG START Engine Start'><td class='abbrev'>ENG START</td><td class='full'>Engine Start</td><td class='description'>Initiates the engine start sequence</td></tr><tr data-search='ENG MASTER Engine Master'><td class='abbrev'>ENG MASTER</td><td class='full'>Engine Master</td><td class='description'>Main control for engine operation</td></tr><tr data-search='IGN Ignition'><td class='abbrev'>IGN</td><td class='full'>Ignition</td><td class='description'>Controls engine ignition system</td></tr><tr data-search='FADEC Full Authority Digital Engine Control'><td class='abbrev'>FADEC</td><td class='full'>Full Authority Digital Engine Control</td><td class='description'>Digital system managing all aspects of engine performance</td></tr><tr data-search='CRANK Engine Crank Mode'><td class='abbrev'>CRANK</td><td class='full'>Engine Crank Mode</td><td class='description'>Mode for engine start sequence</td></tr><tr data-search='RUN Engine Run'><td class='abbrev'>RUN</td><td class='full'>Engine Run</td><td class='description'>Indicates engine is running normally</td></tr><tr data-search='STOP Engine Stop'><td class='abbrev'>STOP</td><td class='full'>Engine Stop</td><td class='description'>Shuts down the engine</td></tr><tr data-search='START VALVE Start Valve'><td class='abbrev'>START VALVE</td><td class='full'>Start Valve</td><td class='description'>Controls air flow to start the engine</td></tr><tr data-search='FUEL PUMP Fuel Pump'><td class='abbrev'>FUEL PUMP</td><td class='full'>Fuel Pump</td><td class='description'>Pumps fuel to the engines</td></tr><tr data-search='XFEED Fuel Crossfeed / XFLOW'><td class='abbrev'>XFEED</td><td class='full'>Fuel Crossfeed / XFLOW</td><td class='description'>Enables fuel transfer between tanks to maintain balance</td></tr><tr data-search='FUEL TEMP Fuel Temperature'><td class='abbrev'>FUEL TEMP</td><td class='full'>Fuel Temperature</td><td class='description'>Displays current fuel temperature to prevent icing</td></tr><tr data-search='FUEL QTY Fuel Quantity'><td class='abbrev'>FUEL QTY</td><td class='full'>Fuel Quantity</td><td class='description'>Indicates remaining fuel in the tanks</td></tr><tr data-search='FUEL PRESS Fuel Pressure'><td class='abbrev'>FUEL PRESS</td><td class='full'>Fuel Pressure</td><td class='description'>Shows pressure in the fuel delivery system</td></tr><tr data-search='HYD Hydraulic'><td class='abbrev'>HYD</td><td class='full'>Hydraulic</td><td class='description'>Main hydraulic system indicator</td></tr><tr data-search='HYD PUMP Hydraulic Pump'><td class='abbrev'>HYD PUMP</td><td class='full'>Hydraulic Pump</td><td class='description'>Controls pressurization of hydraulic fluid</td></tr><tr data-search='HYD PRESS Hydraulic Pressure'><td class='abbrev'>HYD PRESS</td><td class='full'>Hydraulic Pressure</td><td class='description'>Displays current hydraulic system pressure</td></tr><tr data-search='HYD QTY Hydraulic Quantity'><td class='abbrev'>HYD QTY</td><td class='full'>Hydraulic Quantity</td><td class='description'>Shows remaining hydraulic fluid level</td></tr><tr data-search='BLEED Bleed Air'><td class='abbrev'>BLEED</td><td class='full'>Bleed Air</td><td class='description'>Controls engine bleed air for pressurization and anti-ice</td></tr><tr data-search='PACK Air Conditioning Pack'><td class='abbrev'>PACK</td><td class='full'>Air Conditioning Pack</td><td class='description'>Controls cabin temperature and air conditioning</td></tr><tr data-search='PACK FLOW Pack Flow Control'><td class='abbrev'>PACK FLOW</td><td class='full'>Pack Flow Control</td><td class='description'>Adjusts air flow rate from the air conditioning packs</td></tr><tr data-search='APU BLEED APU Bleed Air'><td class='abbrev'>APU BLEED</td><td class='full'>APU Bleed Air</td><td class='description'>Controls bleed air supply from the APU</td></tr><tr data-search='CKPT TEMP Cockpit Temperature'><td class='abbrev'>CKPT TEMP</td><td class='full'>Cockpit Temperature</td><td class='description'>Displays and controls cockpit temperature</td></tr><tr data-search='CABIN TEMP Cabin Temperature'><td class='abbrev'>CABIN TEMP</td><td class='full'>Cabin Temperature</td><td class='description'>Displays and controls passenger cabin temperature</td></tr><tr data-search='VENT Ventilation'><td class='abbrev'>VENT</td><td class='full'>Ventilation</td><td class='description'>Controls fresh air circulation in the cabin</td></tr><tr data-search='TRIM AIR Trim Air'><td class='abbrev'>TRIM AIR</td><td class='full'>Trim Air</td><td class='description'>Fine-tunes air temperature in different zones</td></tr><tr data-search='RECIRC FAN Recirculation Fan'><td class='abbrev'>RECIRC FAN</td><td class='full'>Recirculation Fan</td><td class='description'>Circulates and filters cabin air</td></tr><tr data-search='CAB PRESS Cabin Pressurization'><td class='abbrev'>CAB PRESS</td><td class='full'>Cabin Pressurization</td><td class='description'>Controls cabin pressure and altitude</td></tr><tr data-search='OUTFLOW VLV Outflow Valve'><td class='abbrev'>OUTFLOW VLV</td><td class='full'>Outflow Valve</td><td class='description'>Regulates air pressure by controlling air outflow</td></tr><tr data-search='AUTO Automatic'><td class='abbrev'>AUTO</td><td class='full'>Automatic</td><td class='description'>Engages automatic system control mode</td></tr><tr data-search='MAN Manual'><td class='abbrev'>MAN</td><td class='full'>Manual</td><td class='description'>Selects manual system control mode</td></tr><tr data-search='DIFF PRESS Differential Pressure'><td class='abbrev'>DIFF PRESS</td><td class='full'>Differential Pressure</td><td class='description'>Shows pressure difference between cabin and outside air</td></tr><tr data-search='CAB ALT Cabin Altitude'><td class='abbrev'>CAB ALT</td><td class='full'>Cabin Altitude</td><td class='description'>Displays equivalent altitude of cabin pressure</td></tr><tr data-search='WING ANTI-ICE Wing Anti-Ice'><td class='abbrev'>WING ANTI-ICE</td><td class='full'>Wing Anti-Ice</td><td class='description'>Prevents ice accumulation on wing leading edges</td></tr><tr data-search='ENG ANTI-ICE Engine Anti-Ice'><td class='abbrev'>ENG ANTI-ICE</td><td class='full'>Engine Anti-Ice</td><td class='description'>Prevents ice formation on engine inlets</td></tr><tr data-search='PROBE HEAT Probe Heat'><td class='abbrev'>PROBE HEAT</td><td class='full'>Probe Heat</td><td class='description'>Prevents ice on pitot and static ports</td></tr><tr data-search='WINDOW HEAT Window / Windshield Heat'><td class='abbrev'>WINDOW HEAT</td><td class='full'>Window / Windshield Heat</td><td class='description'>Prevents fogging and icing on cockpit windows</td></tr><tr data-search='ICE DET Ice Detection'><td class='abbrev'>ICE DET</td><td class='full'>Ice Detection</td><td class='description'>System that detects ice accumulation on aircraft surfaces</td></tr><tr data-search='NAV Navigation Lights'><td class='abbrev'>NAV</td><td class='full'>Navigation Lights</td><td class='description'>Position lights that indicate aircraft orientation to other pilots</td></tr><tr data-search='BEACON Beacon Light'><td class='abbrev'>BEACON</td><td class='full'>Beacon Light</td><td class='description'>Rotating red light indicating engines are running or about to start</td></tr><tr data-search='STROBE Strobe Light'><td class='abbrev'>STROBE</td><td class='full'>Strobe Light</td><td class='description'>High-intensity flashing light for aircraft visibility</td></tr><tr data-search='LOGO LT Logo Light'><td class='abbrev'>LOGO LT</td><td class='full'>Logo Light</td><td class='description'>Illuminates the vertical stabilizer for ground and air visibility</td></tr><tr data-search='WING LT Wing Light'><td class='abbrev'>WING LT</td><td class='full'>Wing Light</td><td class='description'>Illuminates the wing leading edge for inspection and de-icing</td></tr><tr data-search='LANDING LT Landing Light'><td class='abbrev'>LANDING LT</td><td class='full'>Landing Light</td><td class='description'>High-intensity light for runway illumination during takeoff and landing</td></tr><tr data-search='TAXI LT Taxi Light'><td class='abbrev'>TAXI LT</td><td class='full'>Taxi Light</td><td class='description'>Forward-facing light for ground movement visibility</td></tr><tr data-search='DOME LT Dome Light'><td class='abbrev'>DOME LT</td><td class='full'>Dome Light</td><td class='description'>Overhead lighting in the cockpit that provides general illumination for the flight deck, essential for night operations and low-light conditions. It ensures proper visibility of controls and instruments without causing glare on the windscreen.</td></tr><tr data-search='PANEL LT Panel Light'><td class='abbrev'>PANEL LT</td><td class='full'>Panel Light</td><td class='description'>Adjustable lighting system that illuminates the instrument panel, allowing pilots to read gauges and controls in low-light conditions without affecting night vision. Typically features dimming controls for optimal visibility.</td></tr><tr data-search='CABIN LT Cabin Light'><td class='abbrev'>CABIN LT</td><td class='full'>Cabin Light</td><td class='description'>Controls the main passenger cabin lighting system, including reading lights, overhead lighting, and emergency lighting. Includes dimming capabilities and night lighting modes to maintain a comfortable cabin environment during all phases of flight.</td></tr><tr data-search='ENG FIRE Engine Fire'><td class='abbrev'>ENG FIRE</td><td class='full'>Engine Fire</td><td class='description'>Warning system that detects and alerts the crew to engine fires. Includes fire detection loops, warning lights, and fire suppression systems. When activated, it triggers fire extinguishing procedures and may automatically shut down affected systems.</td></tr><tr data-search='APU FIRE APU Fire'><td class='abbrev'>APU FIRE</td><td class='full'>APU Fire</td><td class='description'>Dedicated fire detection and suppression system for the Auxiliary Power Unit. Monitors for fire conditions in the APU compartment and provides visual and aural warnings. Includes fire extinguishing capability that can be activated from the flight deck.</td></tr><tr data-search='FIRE TEST Fire Test'><td class='abbrev'>FIRE TEST</td><td class='full'>Fire Test</td><td class='description'>Allows crew to test the functionality of fire detection and warning systems. When activated, it checks the integrity of fire detection loops, warning lights, and aural alerts. A required part of pre-flight checks to ensure all fire protection systems are operational.</td></tr><tr data-search='CARGO FIRE Cargo Fire Detection'><td class='abbrev'>CARGO FIRE</td><td class='full'>Cargo Fire Detection</td><td class='description'>Monitors cargo compartments for fire or smoke using smoke detectors and heat sensors. Provides early warning of potential fire hazards in inaccessible areas. May be connected to fire suppression systems to control fires without crew intervention.</td></tr><tr data-search='DISCH Discharge Indicator'><td class='abbrev'>DISCH</td><td class='full'>Discharge Indicator</td><td class='description'>Indicates when a fire extinguishing agent has been discharged into a designated area. Shows the status of fire suppression systems and helps crew monitor the effectiveness of firefighting actions. May show pressure or chemical release confirmation.</td></tr><tr data-search='AP Autopilot'><td class='abbrev'>AP</td><td class='full'>Autopilot</td><td class='description'>Automated flight control system that can maintain aircraft attitude, altitude, heading, and speed without constant pilot input. Can follow pre-programmed flight plans and includes multiple modes for different phases of flight. Reduces pilot workload during long flights.</td></tr><tr data-search='FD Flight Director'><td class='abbrev'>FD</td><td class='full'>Flight Director</td><td class='description'>Flight instrument that provides visual guidance to the pilot, showing the required pitch and roll inputs to follow a specific flight path. Works with navigation systems to guide the aircraft along the intended route, approach path, or holding pattern.</td></tr><tr data-search='YD Yaw Damper'><td class='abbrev'>YD</td><td class='full'>Yaw Damper</td><td class='description'>Automatic system that detects and counteracts yawing oscillations (Dutch roll) using the rudder. Improves passenger comfort and reduces structural stress on the airframe. Particularly important in swept-wing aircraft that are prone to Dutch roll tendencies.</td></tr><tr data-search='TO/GA Takeoff / Go-Around'><td class='abbrev'>TO/GA</td><td class='full'>Takeoff / Go-Around</td><td class='description'>Button or switch that commands maximum available thrust for takeoff or go-around procedures. When activated, it sets the engines to a pre-determined thrust setting and configures flight guidance systems for the appropriate phase of flight.</td></tr><tr data-search='HDG Heading'><td class='abbrev'>HDG</td><td class='full'>Heading</td><td class='description'>Flight control mode that maintains the aircraft's current magnetic heading. When engaged, the autopilot will adjust the aircraft's bank angle to maintain the selected heading, compensating for wind drift. Essential for VFR navigation and ATC vectoring.</td></tr><tr data-search='ALT Altitude Hold'><td class='abbrev'>ALT</td><td class='full'>Altitude Hold</td><td class='description'>Autopilot mode that maintains the aircraft at a specific barometric altitude. The system automatically adjusts pitch and power to hold the selected altitude, compensating for atmospheric changes and weight variations. Can be overridden by the pilot for altitude changes.</td></tr><tr data-search='V/S Vertical Speed'><td class='abbrev'>V/S</td><td class='full'>Vertical Speed</td><td class='description'>Flight control mode that maintains a specific rate of climb or descent in feet per minute. The pilot selects the desired vertical speed, and the autopilot adjusts the aircraft's pitch to maintain that rate until reaching a new altitude or the mode is changed.</td></tr><tr data-search='LNAV Lateral Navigation'><td class='abbrev'>LNAV</td><td class='full'>Lateral Navigation</td><td class='description'>Autopilot mode that follows the lateral (left/right) path of the active flight plan. The aircraft will automatically follow the programmed route, making turns at waypoints and following airways or approach procedures as defined in the FMS.</td></tr><tr data-search='VNAV Vertical Navigation'><td class='abbrev'>VNAV</td><td class='full'>Vertical Navigation</td><td class='description'>Advanced autopilot mode that manages the aircraft's vertical flight path according to the flight plan. Controls altitude, airspeed, and thrust to meet altitude restrictions at waypoints, optimize fuel efficiency, and follow standard departure/arrival procedures.</td></tr><tr data-search='SPD / MACH Speed / Mach'><td class='abbrev'>SPD / MACH</td><td class='full'>Speed / Mach</td><td class='description'>Autopilot mode that maintains either indicated airspeed (SPD) or Mach number (MACH). At lower altitudes, airspeed is typically used, while at higher altitudes, Mach number becomes the standard reference. The system automatically switches between them based on altitude or pilot selection.</td></tr><tr data-search='FLCH Flight Level Change'><td class='abbrev'>FLCH</td><td class='full'>Flight Level Change</td><td class='description'>Autopilot mode that changes altitude while maintaining a specific airspeed or Mach number. The system adjusts thrust to maintain the target speed while the aircraft climbs or descends. Ideal for efficient altitude changes during cruise or when cleared to a new flight level by ATC.</td></tr><tr data-search='TRIM Trim'><td class='abbrev'>TRIM</td><td class='full'>Trim</td><td class='description'>System that adjusts the neutral position of flight control surfaces to reduce control forces and maintain desired attitude without constant control input. Includes elevator, aileron, and rudder trim. Can be manually adjusted or automatically controlled by the autopilot.</td></tr><tr data-search='FLAP Flap'><td class='abbrev'>FLAP</td><td class='full'>Flap</td><td class='description'>High-lift devices on the wings that increase lift and drag when extended. Used during takeoff and landing to allow slower approach speeds and steeper descent angles. Different flap settings (degrees of extension) are used for various phases of flight and performance requirements.</td></tr><tr data-search='SPOILER / SPEED BRAKE Speed Brake'><td class='abbrev'>SPOILER</td><td class='full'>Speed Brake</td><td class='description'>Aerodynamic surfaces that can be deployed to increase drag and reduce lift. Used to control airspeed during descent, increase descent rate without gaining excessive speed, and assist with braking after touchdown. Some aircraft combine spoilers and speed brakes into a single system.</td></tr>
+<tr data-search='NAV 1/2 Navigation Radio'><td class='abbrev'>NAV 1/2</td><td class='full'>Navigation Radio</td><td class='description'>Radio navigation system providing bearing information</td></tr><tr data-search='COMM 1/2 Communication Radio'><td class='abbrev'>COMM 1/2</td><td class='full'>Communication Radio</td><td class='description'>Radio communication system for voice and data transmission</td></tr><tr data-search='ADF Automatic Direction Finder'><td class='abbrev'>ADF</td><td class='full'>Automatic Direction Finder</td><td class='description'>Navigational aid that uses NDB signals</td></tr><tr data-search='XPDR Transponder'><td class='abbrev'>XPDR</td><td class='full'>Transponder</td><td class='description'>System that responds to radar interrogations with aircraft identification and altitude</td></tr><tr data-search='TCAS Traffic Collision Avoidance System'><td class='abbrev'>TCAS</td><td class='full'>Traffic Collision Avoidance System</td><td class='description'>Monitors nearby aircraft and provides collision avoidance instructions</td></tr><tr data-search='GPWS Ground Proximity Warning System'><td class='abbrev'>GPWS</td><td class='full'>Ground Proximity Warning System</td><td class='description'>Alerts crew of potential terrain conflicts</td></tr><tr data-search='WX RADAR Weather Radar'><td class='abbrev'>WX RADAR</td><td class='full'>Weather Radar</td><td class='description'>System that detects and displays weather patterns</td></tr><tr data-search='FMS Flight Management System'><td class='abbrev'>FMS</td><td class='full'>Flight Management System</td><td class='description'>Navigation and performance management computer system</td></tr><tr data-search='CDU Control Display Unit'><td class='abbrev'>CDU</td><td class='full'>Control Display Unit</td><td class='description'>Interface for the Flight Management System</td></tr><tr data-search='IRS Inertial Reference System'><td class='abbrev'>IRS</td><td class='full'>Inertial Reference System</td><td class='description'>Provides aircraft position, velocity, and attitude data</td></tr><tr data-search='GPS Global Positioning System'><td class='abbrev'>GPS</td><td class='full'>Global Positioning System</td><td class='description'>Satellite-based navigation system providing location and velocity data</td></tr><tr data-search='SEAT BELTS Seat Belts Sign'><td class='abbrev'>SEAT BELTS</td><td class='full'>Seat Belts Sign</td><td class='description'>Warning sign indicating the need to fasten seat belts</td></tr><tr data-search='NO SMOKING No Smoking Sign'><td class='abbrev'>NO SMOKING</td><td class='full'>No Smoking Sign</td><td class='description'>Warning sign indicating that smoking is prohibited</td></tr><tr data-search='EMER EXIT LT Emergency Exit Lights'><td class='abbrev'>EMER EXIT LT</td><td class='full'>Emergency Exit Lights</td><td class='description'>Illuminated signs indicating emergency exit locations</td></tr><tr data-search='EVAC CMD Evacuation Command'><td class='abbrev'>EVAC CMD</td><td class='full'>Evacuation Command</td><td class='description'>System that alerts passengers and crew to evacuate the aircraft</td></tr><tr data-search='OXY Oxygen System'><td class='abbrev'>OXY</td><td class='full'>Oxygen System</td><td class='description'>Provides supplemental oxygen for crew and passengers</td></tr><tr data-search='LDG GEAR Landing Gear Lever'><td class='abbrev'>LDG GEAR</td><td class='full'>Landing Gear Lever</td><td class='description'>Controls the extension and retraction of the landing gear</td></tr><tr data-search='AUTO BRK Auto Brake'><td class='abbrev'>AUTO BRK</td><td class='full'>Auto Brake</td><td class='description'>Automatically applies the brakes during landing</td></tr><tr data-search='ANTISKID Anti-Skid'><td class='abbrev'>ANTISKID</td><td class='full'>Anti-Skid</td><td class='description'>Prevents wheel lockup during braking</td></tr><tr data-search='PARK BRK Parking Brake'><td class='abbrev'>PARK BRK</td><td class='full'>Parking Brake</td><td class='description'>Secures the aircraft during ground operations</td></tr><tr data-search='BRAKE TEMP Brake Temperature'><td class='abbrev'>BRAKE TEMP</td><td class='full'>Brake Temperature</td><td class='description'>Displays the temperature of the brakes</td></tr><tr data-search='ON Power On'><td class='abbrev'>ON</td><td class='full'>Power On</td><td class='description'>Indicates that a system or component is powered on</td></tr><tr data-search='OFF Power Off'><td class='abbrev'>OFF</td><td class='full'>Power Off</td><td class='description'>Indicates that a system or component is powered off</td></tr><tr data-search='ARM Arm / Armed'><td class='abbrev'>ARM</td><td class='full'>Arm / Armed</td><td class='description'>Indicates that a system or component is ready for use</td></tr><tr data-search='DISARM Disarm'><td class='abbrev'>DISARM</td><td class='full'>Disarm</td><td class='description'>Indicates that a system or component is not ready for use</td></tr><tr data-search='PUSH Push Button'><td class='abbrev'>PUSH</td><td class='full'>Push Button</td><td class='description'>Type of switch that requires a push action to activate</td></tr><tr data-search='PULL Pull Handle'><td class='abbrev'>PULL</td><td class='full'>Pull Handle</td><td class='description'>Type of switch that requires a pull action to activate</td></tr><tr data-search='TEST Test'><td class='abbrev'>TEST</td><td class='full'>Test</td><td class='description'>Mode that allows for the testing of systems or components</td></tr><tr data-search='RESET Reset'><td class='abbrev'>RESET</td><td class='full'>Reset</td><td class='description'>Button or switch that resets a system or component to its default state</td></tr><tr data-search='FAULT Fault Indicator'><td class='abbrev'>FAULT</td><td class='full'>Fault Indicator</td><td class='description'>Indicates a malfunction or fault in a system or component</td></tr></tbody></table></div>
+
+<div class="table-wrap">
+<div class="section-title">Unique / Type-Specific Abbreviations</div>
+<table id="unique"><thead><tr><th>Abbrev</th><th>Meaning (Aircraft)</th><th>Description</th></tr></thead><tbody>
+<tr data-search='A220 BPSOV Bleed Pressure Shut-Off Valve (A220)'><td class='abbrev'>BPSOV</td><td class='full'>Bleed Pressure Shut-Off Valve (A220)</td><td class='description'>Controls bleed air flow from engines to aircraft systems</td></tr>
+<tr data-search='A220 ECS Environmental Control System (A220)'><td class='abbrev'>ECS</td><td class='full'>Environmental Control System (A220)</td><td class='description'>Manages cabin temperature, pressure, and air quality</td></tr>
+<tr data-search='A320 ECAM Electronic Centralized Aircraft Monitor (A320 Family)'><td class='abbrev'>ECAM</td><td class='full'>Electronic Centralized Aircraft Monitor (A320 Family)</td><td class='description'>Primary flight deck display system showing aircraft systems status and checklists</td></tr>
+<tr data-search='A320 ELAC Elevator and Aileron Computer (A320 Family)'><td class='abbrev'>ELAC</td><td class='full'>Elevator and Aileron Computer (A320 Family)</td><td class='description'>Controls the aircraft's elevators and ailerons</td></tr>
+<tr data-search='A320 FAC Flight Augmentation Computer (A320 Family)'><td class='abbrev'>FAC</td><td class='full'>Flight Augmentation Computer (A320 Family)</td><td class='description'>Manages flight control laws and envelope protection</td></tr>
+<tr data-search='737 MAX MCAS Maneuvering Characteristics Augmentation System (737 MAX)'><td class='abbrev'>MCAS</td><td class='full'>Maneuvering Characteristics Augmentation System (737 MAX)</td><td class='description'>Automatic trim system that enhances pitch stability</td></tr>
+<tr data-search='737 MAX AOA DISAGREE Angle of Attack Disagree (737 MAX)'><td class='abbrev'>AOA DISAGREE</td><td class='full'>Angle of Attack Disagree (737 MAX)</td><td class='description'>Warning indicating inconsistent angle of attack sensor readings</td></tr>
+<tr data-search='E-Jets AFCS Automatic Flight Control System (E170/E175/E190/E195)'><td class='abbrev'>AFCS</td><td class='full'>Automatic Flight Control System (E170/E175/E190/E195)</td><td class='description'>Manages the aircraft's autopilot and flight director systems</td></tr>
+<tr data-search='E-Jets CDU Control Display Unit (E-Jets)'><td class='abbrev'>CDU</td><td class='full'>Control Display Unit (E-Jets)</td><td class='description'>Interface for flight management system data entry and display</td></tr>
+<tr data-search='CRJ HGS Head-Up Guidance System (CRJ Series)'><td class='abbrev'>HGS</td><td class='full'>Head-Up Guidance System (CRJ Series)</td><td class='description'>Projects flight information onto a transparent display in the pilot's line of sight</td></tr>
+<tr data-search='CRJ ISFD Integrated Standby Flight Display (CRJ Series)'><td class='abbrev'>ISFD</td><td class='full'>Integrated Standby Flight Display (CRJ Series)</td><td class='description'>Backup flight display showing essential flight parameters</td></tr>
+<tr data-search='777 AIMS Airplane Information Management System (Boeing 777)'><td class='abbrev'>AIMS</td><td class='full'>Airplane Information Management System (Boeing 777)</td><td class='description'>Central computer system managing aircraft systems and data</td></tr>
+<tr data-search='787 ELEC EMER Electrical Emergency Mode (Boeing 787)'><td class='abbrev'>ELEC EMER</td><td class='full'>Electrical Emergency Mode (Boeing 787)</td><td class='description'>Backup electrical configuration for critical systems during failures</td></tr>
+<tr data-search='A350 ECAM Electronic Centralized Aircraft Monitor (A350)'><td class='abbrev'>ECAM</td><td class='full'>Electronic Centralized Aircraft Monitor (A350)</td><td class='description'>Advanced system display for monitoring aircraft systems and checklists</td></tr>
+<tr data-search='Global Series HGS Head-Up Guidance System (Global Series)'><td class='abbrev'>HGS</td><td class='full'>Head-Up Guidance System (Global Series)</td><td class='description'>Projects critical flight information onto a transparent display</td></tr>
+<tr data-search='Gulfstream G650 HUD Head-Up Display (G650/G650ER)'><td class='abbrev'>HUD</td><td class='full'>Head-Up Display (G650/G650ER)</td><td class='description'>Displays flight information in the pilot's forward field of view</td></tr>
+<tr data-search='Falcon 7X EICAS Engine Indicating and Crew Alerting System (Falcon 7X/8X)'><td class='abbrev'>EICAS</td><td class='full'>Engine Indicating and Crew Alerting System (Falcon 7X/8X)</td><td class='description'>Monitors and displays engine parameters and system alerts</td></tr>
+<tr data-search='Q400 AFCS Automatic Flight Control System (Q400)'><td class='abbrev'>AFCS</td><td class='full'>Automatic Flight Control System (Q400)</td><td class='description'>Manages autopilot and flight director functions for the Q400</td></tr>
+<tr data-search='Legacy 450/500 FMS Flight Management System (Legacy 450/500)'><td class='abbrev'>FMS</td><td class='full'>Flight Management System (Legacy 450/500)</td><td class='description'>Navigation and performance management computer system</td></tr>
+<tr data-search='Citation Latitude GPWS Ground Proximity Warning System (Citation Latitude)'><td class='abbrev'>GPWS</td><td class='full'>Ground Proximity Warning System (Citation Latitude)</td><td class='description'>Alerts crew of potential terrain conflicts and unsafe descent rates</td></tr>
+<tr data-search='PC-24 ADIRU Air Data Inertial Reference Unit (PC-24)'><td class='abbrev'>ADIRU</td><td class='full'>Air Data Inertial Reference Unit (PC-24)</td><td class='description'>Combines air data and inertial reference functions for navigation</td></tr>
+<tr data-search='Global 7500 HGS Head-Up Guidance System (Global 7500)'><td class='abbrev'>HGS</td><td class='full'>Head-Up Guidance System (Global 7500)</td><td class='description'>Advanced HUD system for enhanced situational awareness</td></tr>
+<tr data-search='Gulfstream G500/G600 HUD Head-Up Display (G500/G600)'><td class='abbrev'>HUD</td><td class='full'>Head-Up Display (G500/G600)</td><td class='description'>Next-generation display system providing critical flight information</td></tr>
+<tr data-search='Falcon 6X EICAS Engine Indicating and Crew Alerting System (Falcon 6X)'><td class='abbrev'>EICAS</td><td class='full'>Engine Indicating and Crew Alerting System (Falcon 6X)</td><td class='description'>Advanced system for monitoring engine parameters and system alerts</td></tr>
+<tr data-search='Praetor 500/600 FMS Flight Management System (Praetor 500/600)'><td class='abbrev'>FMS</td><td class='full'>Flight Management System (Praetor 500/600)</td><td class='description'>Integrated navigation and performance management system</td></tr>
+<tr data-search='Gulfstream G650/650ER SCS Standby Control System (G650/G650ER)'><td class='abbrev'>SCS</td><td class='full'>Standby Control System (G650/G650ER)</td><td class='description'>Backup flight control system for emergency situations</td></tr>
+<tr data-search='Gulfstream G500/600 SVS Synthetic Vision System (G500/G600)'><td class='abbrev'>SVS</td><td class='full'>Synthetic Vision System (G500/G600)</td><td class='description'>3D terrain and obstacle display for enhanced situational awareness</td></tr>
+<tr data-search='Bombardier Global 5500/6500 VNAV Vertical Navigation (Global 5500/6500)'><td class='abbrev'>VNAV</td><td class='full'>Vertical Navigation (Global 5500/6500)</td><td class='description'>Automated vertical flight path management system</td></tr>
+<tr data-search='Dassault Falcon 8X EASy Flight Deck (Falcon 8X)'><td class='abbrev'>EASy</td><td class='full'>Enhanced Avionics System (Falcon 8X)</td><td class='description'>Advanced glass cockpit avionics suite with integrated systems</td></tr>
+<tr data-search='Cessna Citation CJ4 FADEC Full Authority Digital Engine Control (CJ4)'><td class='abbrev'>FADEC</td><td class='full'>Full Authority Digital Engine Control (CJ4)</td><td class='description'>Digital system for complete engine management and control</td></tr>
+<tr data-search='Pilatus PC-24 DME Distance Measuring Equipment (PC-24)'><td class='abbrev'>DME</td><td class='full'>Distance Measuring Equipment (PC-24)</td><td class='description'>Radio navigation system for measuring distance from ground stations</td></tr>
+<tr data-search='Embraer Phenom 300 EICAS Engine Indicating and Crew Alerting System (Phenom 300)'><td class='abbrev'>EICAS</td><td class='full'>Engine Indicating and Crew Alerting System (Phenom 300)</td><td class='description'>Integrated display for engine parameters and system alerts</td></tr>
+<tr data-search='HondaJet HA-420 FMS Flight Management System (HondaJet)'><td class='abbrev'>FMS</td><td class='full'>Flight Management System (HondaJet)</td><td class='description'>Advanced navigation and performance management computer</td></tr>
+<tr data-search='Cirrus Vision SF50 CAPS Cirrus Airframe Parachute System (SF50)'><td class='abbrev'>CAPS</td><td class='full'>Cirrus Airframe Parachute System (SF50)</td><td class='description'>Whole-aircraft parachute system for emergency descents</td></tr>
+<tr data-search='Learjet 75 TKS TKS Ice Protection System (Learjet 75)'><td class='abbrev'>TKS</td><td class='full'>TKS Ice Protection System (Learjet 75)</td><td class='description'>Fluid-based de-icing system for wings and control surfaces</td></tr>
+<tr data-search='Bombardier Challenger 3500 ESP Enhanced Stability and Protection (Challenger 3500)'><td class='abbrev'>ESP</td><td class='full'>Enhanced Stability and Protection (Challenger 3500)</td><td class='description'>System that improves aircraft stability and prevents stall conditions</td></tr>
+<tr data-search='Dassault Falcon 6X EASy III Flight Deck (Falcon 6X)'><td class='abbrev'>EASy III</td><td class='full'>Enhanced Avionics System III (Falcon 6X)</td><td class='description'>Third-generation integrated avionics suite with advanced features</td></tr>
+<tr data-search='Gulfstream G700 PFD Primary Flight Display (G700)'><td class='abbrev'>PFD</td><td class='full'>Primary Flight Display (G700)</td><td class='description'>Main flight instrument display showing attitude, speed, altitude, and navigation data</td></tr>
+<tr data-search='Cessna Citation Longitude FMS 3000 Flight Management System (Citation Longitude)'><td class='abbrev'>FMS 3000</td><td class='full'>Flight Management System 3000 (Citation Longitude)</td><td class='description'>Advanced flight management system with integrated navigation and performance</td></tr>
+<tr data-search='Pilatus PC-24 ESPNG Enhanced Stability and Protection Next Gen (PC-24 NG)'><td class='abbrev'>ESPNG</td><td class='full'>Enhanced Stability and Protection Next Gen (PC-24 NG)</td><td class='description'>Next-generation flight envelope protection system</td></tr>
+<tr data-search='Embraer Praetor 600 E2G WX E2G Weather Radar (Praetor 600)'><td class='abbrev'>E2G WX</td><td class='full'>E2G Weather Radar (Praetor 600)</td><td class='description'>Advanced weather radar system with enhanced graphics</td></tr>
+<tr data-search='Bombardier Global 8000 FADEC Full Authority Digital Engine Control (Global 8000)'><td class='abbrev'>FADEC</td><td class='full'>Full Authority Digital Engine Control (Global 8000)</td><td class='description'>Digital engine control system for optimized performance and efficiency</td></tr>
+<tr data-search='Dassault Falcon 10X EASy IV Flight Deck (Falcon 10X)'><td class='abbrev'>EASy IV</td><td class='full'>Enhanced Avionics System IV (Falcon 10X)</td><td class='description'>Fourth-generation avionics with touchscreen interfaces and AI integration</td></tr>
+<tr data-search='Cessna Citation X+ FJ44 FADEC FJ44 Engine FADEC (Citation X+)'><td class='abbrev'>FJ44 FADEC</td><td class='full'>FJ44 Engine FADEC (Citation X+)</td><td class='description'>Digital engine control for Williams FJ44 turbofan engines</td></tr>
+
+<!-- Military Aircraft -->
+<tr data-search='F-16 MLU Mid-Life Update (F-16 Fighting Falcon)'><td class='abbrev'>MLU</td><td class='full'>Mid-Life Update (F-16 Fighting Falcon)</td><td class='description'>Comprehensive upgrade program extending F-16 service life</td></tr>
+<tr data-search='F-22 Raptor JHMCS Joint Helmet Mounted Cueing System (F-22 Raptor)'><td class='abbrev'>JHMCS</td><td class='full'>Joint Helmet Mounted Cueing System (F-22 Raptor)</td><td class='description'>Helmet-mounted display for targeting and aircraft control</td></tr>
+<tr data-search='F-35 Lightning II DAS Distributed Aperture System (F-35)'><td class='abbrev'>DAS</td><td class='full'>Distributed Aperture System (F-35)</td><td class='description'>360-degree infrared vision system for situational awareness</td></tr>
+<tr data-search='F-15E Strike Eagle AESA Active Electronically Scanned Array (F-15E)'><td class='abbrev'>AESA</td><td class='full'>Active Electronically Scanned Array (F-15E)</td><td class='description'>Advanced radar system with electronic beam steering</td></tr>
+<tr data-search='F/A-18 Super Hornet JHMCS Joint Helmet Mounted Cueing System (F/A-18)'><td class='abbrev'>JHMCS</td><td class='full'>Joint Helmet Mounted Cueing System (F/A-18)</td><td class='description'>Helmet-mounted display for targeting and situational awareness</td></tr>
+<tr data-search='Eurofighter Typhoon PIRATE Passive Infra-Red Airborne Track Equipment (Eurofighter)'><td class='abbrev'>PIRATE</td><td class='full'>Passive Infra-Red Airborne Track Equipment (Eurofighter)</td><td class='description'>Infrared search and track system for target detection</td></tr>
+<tr data-search='Dassault Rafale SPECTRA Self-Protection Equipment (Rafale)'><td class='abbrev'>SPECTRA</td><td class='full'>Self-Protection Equipment (Rafale)</td><td class='description'>Integrated electronic warfare and countermeasures system</td></tr>
+<tr data-search='Sukhoi Su-35 OLS-35 IRST Infra-Red Search and Track (Su-35)'><td class='abbrev'>OLS-35 IRST</td><td class='full'>Infra-Red Search and Track (Su-35)</td><td class='description'>Advanced infrared detection and tracking system</td></tr>
+<tr data-search='C-17 Globemaster III TACAN Tactical Air Navigation (C-17)'><td class='abbrev'>TACAN</td><td class='full'>Tactical Air Navigation (C-17)</td><td class='description'>Military air navigation system providing range and bearing</td></tr>
+<tr data-search='A-10 Thunderbolt II GAU-8 Avenger 30mm Cannon (A-10)'><td class='abbrev'>GAU-8</td><td class='full'>Avenger 30mm Cannon (A-10)</td><td class='description'>High-powered rotary cannon for close air support</td></tr>
+<tr data-search='B-2 Spirit LO Low Observable Technology (B-2 Spirit)'><td class='abbrev'>LO</td><td class='full'>Low Observable Technology (B-2 Spirit)</td><td class='description'>Stealth technology reducing radar and infrared signatures</td></tr>
+<tr data-search='E-3 Sentry AWACS Airborne Warning and Control System (E-3)'><td class='abbrev'>AWACS</td><td class='full'>Airborne Warning and Control System (E-3)</td><td class='description'>Airborne radar system for command and control</td></tr>
+<tr data-search='P-8 Poseidon ASW Anti-Submarine Warfare (P-8)'><td class='abbrev'>ASW</td><td class='full'>Anti-Submarine Warfare (P-8)</td><td class='description'>Systems and tactics for detecting and engaging submarines</td></tr>
+<tr data-search='KC-135 Stratotanker AR Aerial Refueling (KC-135)'><td class='abbrev'>AR</td><td class='full'>Aerial Refueling (KC-135)</td><td class='description'>In-flight refueling capability for extended missions</td></tr>
+<tr data-search='C-130J Super Hercules HUD Head-Up Display (C-130J)'><td class='abbrev'>HUD</td><td class='full'>Head-Up Display (C-130J)</td><td class='description'>Primary flight information display in pilot's line of sight</td></tr>
+
+<!-- Helicopters -->
+<tr data-search='UH-60 Black Hawk EAPS Engine Air Particle Separator (UH-60)'><td class='abbrev'>EAPS</td><td class='full'>Engine Air Particle Separator (UH-60)</td><td class='description'>Prevents debris from entering engine intakes in dusty environments</td></tr>
+<tr data-search='AH-64 Apache LONGBOW Fire Control Radar (AH-64D/E)'><td class='abbrev'>LONGBOW</td><td class='full'>Fire Control Radar (AH-64D/E)</td><td class='description'>Millimeter-wave radar for targeting and fire control</td></tr>
+<tr data-search='CH-47 Chinook FADEC Full Authority Digital Engine Control (CH-47F)'><td class='abbrev'>FADEC</td><td class='full'>Full Authority Digital Engine Control (CH-47F)</td><td class='description'>Digital system managing all aspects of engine performance and power management</td></tr>
+<tr data-search='V-22 Osprey Proprotor Tiltrotor System (V-22)'><td class='abbrev'>Proprotor</td><td class='full'>Tiltrotor System (V-22)</td><td class='description'>Rotary system that tilts between helicopter and airplane modes</td></tr>
+<tr data-search='MH-60R Seahawk HELRAS Helicopter Long-Range Active Sonar (MH-60R)'><td class='abbrev'>HELRAS</td><td class='full'>Helicopter Long-Range Active Sonar (MH-60R)</td><td class='description'>Advanced sonar system for anti-submarine warfare operations</td></tr>
+
+<!-- General Aviation -->
+<tr data-search='Cessna 172 G1000 Glass Cockpit System (Cessna 172)'><td class='abbrev'>G1000</td><td class='full'>Glass Cockpit System (Cessna 172)</td><td class='description'>Integrated flight deck with digital displays for navigation and systems</td></tr>
+<tr data-search='Piper PA-28 G5 Electronic Flight Instrument (PA-28)'><td class='abbrev'>G5</td><td class='full'>Electronic Flight Instrument (PA-28)</td><td class='description'>Digital backup instrument for attitude and heading reference</td></tr>
+<tr data-search='Cirrus SR22 CAPS Cirrus Airframe Parachute System (SR22)'><td class='abbrev'>CAPS</td><td class='full'>Cirrus Airframe Parachute System (SR22)</td><td class='description'>Whole-aircraft parachute system for emergency descent</td></tr>
+<tr data-search='Diamond DA42 FADEC Full Authority Digital Engine Control (DA42)'><td class='abbrev'>FADEC</td><td class='full'>Full Authority Digital Engine Control (DA42)</td><td class='description'>Digital system managing all aspects of engine performance</td></tr>
+<tr data-search='Beechcraft Bonanza G36 TKS TKS Ice Protection System (G36)'><td class='abbrev'>TKS</td><td class='full'>TKS Ice Protection System (G36)</td><td class='description'>Fluid-based ice protection system for wings and tail</td></tr>
+
+<!-- Regional Jets -->
+<tr data-search='Embraer ERJ-145 EICAS Engine Indicating and Crew Alerting System (ERJ-145)'><td class='abbrev'>EICAS</td><td class='full'>Engine Indicating and Crew Alerting System (ERJ-145)</td><td class='description'>Displays engine parameters and system warnings</td></tr>
+<tr data-search='Bombardier CRJ-900 FMS Flight Management System (CRJ-900)'><td class='abbrev'>FMS</td><td class='full'>Flight Management System (CRJ-900)</td><td class='description'>Navigation and performance management computer system</td></tr>
+<tr data-search='Sukhoi Superjet 100 FBW Fly-By-Wire (Superjet 100)'><td class='abbrev'>FBW</td><td class='full'>Fly-By-Wire (Superjet 100)</td><td class='description'>Digital flight control system replacing manual controls</td></tr>
+<tr data-search='Mitsubishi SpaceJet MSA Multi-Scan Weather Radar (SpaceJet)'><td class='abbrev'>MSA</td><td class='full'>Multi-Scan Weather Radar (SpaceJet)</td><td class='description'>Advanced radar system for weather detection and avoidance</td></tr>
+
+<!-- Upcoming Aircraft -->
+<tr data-search='Boom Overture SSBJ Supersonic Business Jet (Boom Overture)'><td class='abbrev'>SSBJ</td><td class='full'>Supersonic Business Jet (Boom Overture)</td><td class='description'>Next-generation supersonic passenger aircraft design</td></tr>
+<tr data-search='Aerion AS2 AS2 Supersonic Business Jet (Aerion AS2)'><td class='abbrev'>AS2</td><td class='full'>Supersonic Business Jet (Aerion AS2)</td><td class='description'>Business jet designed for supersonic speeds over land</td></tr>
+<tr data-search='Eviation Alice All-Electric Aircraft (Eviation Alice)'><td class='abbrev'>Alice</td><td class='full'>All-Electric Aircraft (Eviation Alice)</td><td class='description'>Fully electric commuter aircraft with zero emissions</td></tr>
+<tr data-search='Lilium Jet eVTOL Electric Vertical Take-Off and Landing (Lilium Jet)'><td class='abbrev'>eVTOL</td><td class='full'>Electric Vertical Take-Off and Landing (Lilium Jet)</td><td class='description'>Electric aircraft designed for urban air mobility and short-haul flights</td></tr>
+
+<!-- Additional Systems -->
+<tr data-search='TCAS Traffic Collision Avoidance System (General Aviation)'><td class='abbrev'>TCAS</td><td class='full'>Traffic Collision Avoidance System</td><td class='description'>Monitors nearby aircraft and provides collision avoidance guidance</td></tr>
+<tr data-search='EGPWS Enhanced Ground Proximity Warning System (Airliners)'><td class='abbrev'>EGPWS</td><td class='full'>Enhanced Ground Proximity Warning System</td><td class='description'>Advanced terrain awareness and warning system for aircraft</td></tr>
+<tr data-search='TAWS Terrain Awareness and Warning System (Airliners)'><td class='abbrev'>TAWS</td><td class='full'>Terrain Awareness and Warning System</td><td class='description'>Provides alerts for potential terrain conflicts and obstacles</td></tr>
+<tr data-search='RVSM Reduced Vertical Separation Minimum (High Altitude Operations)'><td class='abbrev'>RVSM</td><td class='full'>Reduced Vertical Separation Minimum</td><td class='description'>Allows reduced vertical separation between aircraft at high altitudes</td></tr>
+<tr data-search='ACAS Airborne Collision Avoidance System (Military Aircraft)'><td class='abbrev'>ACAS</td><td class='full'>Airborne Collision Avoidance System</td><td class='description'>Military version of TCAS with additional capabilities</td></tr>
+
+<!-- 5th Generation Fighters -->
+<tr data-search='F-35 Lightning II DAS Distributed Aperture System (F-35)'><td class='abbrev'>DAS</td><td class='full'>Distributed Aperture System (F-35 Lightning II)</td><td class='description'>360-degree infrared camera system for situational awareness</td></tr>
+<tr data-search='F-35 Lightning II HMDS Helmet Mounted Display System (F-35)'><td class='abbrev'>HMDS</td><td class='full'>Helmet Mounted Display System (F-35 Lightning II)</td><td class='description'>Projects flight and targeting information onto the pilot's visor</td></tr>
+<tr data-search='F-22 Raptor AN/APG-77 AESA Radar (F-22 Raptor)'><td class='abbrev'>AN/APG-77</td><td class='full'>AESA Radar (F-22 Raptor)</td><td class='description'>Advanced Active Electronically Scanned Array radar with low probability of intercept</td></tr>
+<tr data-search='F-22 Raptor TVC Thrust Vectoring Control (F-22 Raptor)'><td class='abbrev'>TVC</td><td class='full'>Thrust Vectoring Control (F-22 Raptor)</td><td class='description'>Allows engine exhaust to be directed for enhanced maneuverability</td></tr>
+<tr data-search='J-20 Mighty Dragon EODAS Electro-Optical Distributed Aperture System (J-20)'><td class='abbrev'>EODAS</td><td class='full'>Electro-Optical Distributed Aperture System (J-20 Mighty Dragon)</td><td class='description'>360-degree infrared surveillance and missile warning system</td></tr>
+<tr data-search='J-20 Mighty Dragon PL-15 Long-Range AAM (J-20)'><td class='abbrev'>PL-15</td><td class='full'>Long-Range Air-to-Air Missile (J-20 Mighty Dragon)</td><td class='description'>Advanced beyond-visual-range air-to-air missile system</td></tr>
+<tr data-search='Su-57 Felon N036 Byk-A AESA Radar (Su-57)'><td class='abbrev'>N036 Byk-A</td><td class='full'>AESA Radar (Su-57 Felon)</td><td class='description'>Active Electronically Scanned Array radar for advanced targeting</td></tr>
+<tr data-search='Su-57 Felon IMA Integrated Modular Avionics (Su-57)'><td class='abbrev'>IMA</td><td class='full'>Integrated Modular Avionics (Su-57 Felon)</td><td class='description'>Centralized avionics architecture for enhanced performance</td></tr>
+
+<!-- 4.5 Generation Fighters -->
+<tr data-search='F-15EX Eagle II AN/APG-82(v)1 AESA Radar (F-15EX)'><td class='abbrev'>AN/APG-82(v)1</td><td class='full'>AESA Radar (F-15EX Eagle II)</td><td class='description'>Advanced radar with enhanced range and electronic warfare capabilities</td></tr>
+<tr data-search='F-15EX Eagle II JHMCS II (F-15EX)'><td class='abbrev'>JHMCS II</td><td class='full'>Joint Helmet Mounted Cueing System II (F-15EX Eagle II)</td><td class='description'>Helmet-mounted display for targeting and situational awareness</td></tr>
+<tr data-search='Dassault Rafale RBE2-AA AESA Radar (Rafale F4)'><td class='abbrev'>RBE2-AA</td><td class='full'>AESA Radar (Dassault Rafale F4)</td><td class='description'>French active electronically scanned array radar with multi-target tracking</td></tr>
+<tr data-search='Dassault Rafale F4 TALIOS Targeting Pod (Rafale F4)'><td class='abbrev'>TALIOS</td><td class='full'>Targeting Pod (Rafale F4)</td><td class='description'>Advanced targeting system with infrared and laser sensors</td></tr>
+<tr data-search='Eurofighter Typhoon CAPTOR-E AESA Radar (Tranche 4)'><td class='abbrev'>CAPTOR-E</td><td class='full'>AESA Radar (Eurofighter Typhoon Tranche 4)</td><td class='description'>European active electronically scanned array radar system</td></tr>
+<tr data-search='Eurofighter Typhoon PIRATE IRST (Tranche 4)'><td class='abbrev'>PIRATE</td><td class='full'>Infra-Red Search and Track (Eurofighter Typhoon T4)</td><td class='description'>Infrared search and track system for target detection</td></tr>
+<tr data-search='Saab JAS 39E Gripen NG ES-05 Raven AESA Radar (Gripen E)'><td class='abbrev'>ES-05 Raven</td><td class='full'>AESA Radar (Gripen E)</td><td class='description'>Advanced radar system with electronic beam steering and multiple target tracking</td></tr>
+<tr data-search='Saab JAS 39E Gripen NG IRST-OTIS (Gripen E)'><td class='abbrev'>IRST-OTIS</td><td class='full'>Infra-Red Search and Track (Gripen E)</td><td class='description'>Infrared search and track system for target detection</td></tr>
+<tr data-search='KAI KF-21 Boramae AESA Radar (KF-21)'><td class='abbrev'>AESA</td><td class='full'>Active Electronically Scanned Array Radar (KF-21 Boramae)</td><td class='description'>Advanced radar system with electronic beam steering and multiple target tracking</td></tr>
+<tr data-search='KAI KF-21 Boramae EODAS (KF-21)'><td class='abbrev'>EODAS</td><td class='full'>Electro-Optical Distributed Aperture System (KF-21 Boramae)</td><td class='description'>360-degree infrared surveillance and missile warning system</td></tr>
+<tr data-search='Su-35S IRBIS-E PESA Radar (Su-35S)'><td class='abbrev'>IRBIS-E</td><td class='full'>PESA Radar (Su-35S Flanker-E)</td><td class='description'>Russian passive electronically scanned array radar system</td></tr>
+<tr data-search='Mikoyan MiG-35 OLS-35 IRST (MiG-35)'><td class='abbrev'>OLS-35</td><td class='full'>Infra-Red Search and Track (MiG-35)</td><td class='description'>Infrared search and track system for target detection</td></tr>
+<tr data-search='AC WILD AC Power System (ATR 72-600)'><td class='abbrev'>AC WILD</td><td class='full'>AC Power System (ATR 72-600)</td><td class='description'>Alternating current power distribution system for turboprops</td></tr><tr data-search='GEN OFF BUS Generator Off Bus (ATR 72-600)'><td class='abbrev'>GEN OFF BUS</td><td class='full'>Generator Off Bus (ATR 72-600)</td><td class='description'>Indicates generator disconnection from the electrical bus</td></tr><tr data-search='AUTOFEATHER Auto-feather System (ATR 72-600)'><td class='abbrev'>AUTOFEATHER</td><td class='full'>Auto-feather System (ATR 72-600)</td><td class='description'>Automatically feathers propellers during engine failure</td></tr><tr data-search='PROP Propeller (ATR 72-600)'><td class='abbrev'>PROP</td><td class='full'>Propeller (ATR 72-600)</td><td class='description'>Main propeller control and monitoring system</td></tr><tr data-search='ICE PROT Ice Protection (ATR 72-600)'><td class='abbrev'>ICE PROT</td><td class='full'>Ice Protection (ATR 72-600)</td><td class='description'>De-icing and anti-icing systems for flight surfaces</td></tr><tr data-search='IDG Integrated Drive Generator (Airbus families)'><td class='abbrev'>IDG</td><td class='full'>Integrated Drive Generator (Airbus families)</td><td class='description'>Combines generator and constant speed drive in one unit</td></tr><tr data-search='ENG MODE Engine Mode Selector (Airbus)'><td class='abbrev'>ENG MODE</td><td class='full'>Engine Mode Selector (Airbus)</td><td class='description'>Controls engine start and ignition modes</td></tr><tr data-search='DC BAT BUS DC Battery Bus (A350)'><td class='abbrev'>DC BAT BUS</td><td class='full'>DC Battery Bus (A350)</td><td class='description'>Direct current distribution from the main batteries</td></tr><tr data-search='RAT Ram Air Turbine (A350 / 787)'><td class='abbrev'>RAT</td><td class='full'>Ram Air Turbine (A350 / 787)</td><td class='description'>Emergency power source deployed during electrical failure</td></tr><tr data-search='AC ESS FEED Essential Feed Selector (Airbus-specific)'><td class='abbrev'>AC ESS FEED</td><td class='full'>Essential Feed Selector (Airbus-specific)</td><td class='description'>Selects power source for essential AC systems</td></tr><tr data-search='BUS TRANSFER Bus Transfer (Boeing)'><td class='abbrev'>BUS TRANSFER</td><td class='full'>Bus Transfer (Boeing)</td><td class='description'>Controls power transfer between electrical busses</td></tr><tr data-search='CSD Constant Speed Drive (Boeing)'><td class='abbrev'>CSD</td><td class='full'>Constant Speed Drive (Boeing)</td><td class='description'>Maintains constant generator output speed</td></tr><tr data-search='TR UNIT Transformer Rectifier Unit (Boeing)'><td class='abbrev'>TR UNIT</td><td class='full'>Transformer Rectifier Unit (Boeing)</td><td class='description'>Converts AC to DC power for aircraft systems</td></tr><tr data-search='GRAV XFLOW Gravity Crossflow Fuel (CRJ)'><td class='abbrev'>GRAV XFLOW</td><td class='full'>Gravity Crossflow Fuel (CRJ)</td><td class='description'>Allows fuel transfer between tanks using gravity</td></tr><tr data-search='ROLL DISC Aileron/Roll Disconnect (CRJ)'><td class='abbrev'>ROLL DISC</td><td class='full'>Aileron/Roll Disconnect (CRJ)</td><td class='description'>Disconnects aileron control for manual reversion</td></tr><tr data-search='ELEV DISC Elevator Disconnect (CRJ)'><td class='abbrev'>ELEV DISC</td><td class='full'>Elevator Disconnect (CRJ)</td><td class='description'>Disconnects elevator for manual control</td></tr><tr data-search='SPOILERON Spoileron (CRJ)'><td class='abbrev'>SPOILERON</td><td class='full'>Spoileron (CRJ)</td><td class='description'>Combines spoiler and aileron functions for roll control</td></tr><tr data-search='ELEC SYNOPTIC Electrical System Page (E-Jet E2)'><td class='abbrev'>ELEC SYNOPTIC</td><td class='full'>Electrical System Page (E-Jet E2)</td><td class='description'>Displays electrical system status and configuration</td></tr><tr data-search='FUEL BAL Fuel Balance Control (E-Jet E2)'><td class='abbrev'>FUEL BAL</td><td class='full'>Fuel Balance Control (E-Jet E2)</td><td class='description'>Automatically maintains fuel balance between tanks</td></tr><tr data-search='WOW Weight On Wheels (E-Jet / CRJ variants)'><td class='abbrev'>WOW</td><td class='full'>Weight On Wheels (E-Jet / CRJ variants)</td><td class='description'>Indicates when the aircraft is on the ground for system logic</td></tr><tr data-search='HUD Head-Up Display (E-Jet / modern types)'><td class='abbrev'>HUD</td><td class='full'>Head-Up Display (E-Jet / modern types)</td><td class='description'>Projects critical flight information onto a transparent display in the pilot's line of sight</td></tr><tr data-search='BANK LIMIT Bank Angle Limit (Embraer E2)'><td class='abbrev'>BANK LIMIT</td><td class='full'>Bank Angle Limit (Embraer E2)</td><td class='description'>Limits maximum bank angle during automated flight modes for passenger comfort and safety</td></tr>
+<tr data-search='PFD Primary Flight Display'><td class='abbrev'>PFD</td><td class='full'>Primary Flight Display</td><td class='description'>Main flight instrument showing attitude, altitude, airspeed, and vertical speed</td></tr>
+<tr data-search='ND Navigation Display'><td class='abbrev'>ND</td><td class='full'>Navigation Display</td><td class='description'>Shows navigation information including route, waypoints, and weather radar</td></tr>
+<tr data-search='ECAM Electronic Centralized Aircraft Monitoring'><td class='abbrev'>ECAM</td><td class='full'>Electronic Centralized Aircraft Monitoring</td><td class='description'>Displays aircraft system status and checklists (Airbus)</td></tr>
+<tr data-search='EICAS Engine Indicating and Crew Alerting System'><td class='abbrev'>EICAS</td><td class='full'>Engine Indicating and Crew Alerting System</td><td class='description'>Displays engine parameters and system warnings (Boeing)</td></tr>
+<tr data-search='FMC Flight Management Computer'><td class='abbrev'>FMC</td><td class='full'>Flight Management Computer</td><td class='description'>Controls navigation, performance, and flight planning</td></tr>
+<tr data-search='MCDU Multifunction Control Display Unit'><td class='abbrev'>MCDU</td><td class='full'>Multifunction Control Display Unit</td><td class='description'>Interface for the Flight Management System</td></tr>
+<tr data-search='TCAS Traffic Alert and Collision Avoidance System'><td class='abbrev'>TCAS</td><td class='full'>Traffic Alert and Collision Avoidance System</td><td class='description'>Monitors nearby aircraft and provides collision avoidance instructions</td></tr>
+<tr data-search='GPWS Ground Proximity Warning System'><td class='abbrev'>GPWS</td><td class='full'>Ground Proximity Warning System</td><td class='description'>Alerts crew of potential terrain conflicts</td></tr>
+<tr data-search='EGPWS Enhanced Ground Proximity Warning System'><td class='abbrev'>EGPWS</td><td class='full'>Enhanced Ground Proximity Warning System</td><td class='description'>Advanced terrain awareness and warning system</td></tr>
+<tr data-search='RA Radio Altimeter'><td class='abbrev'>RA</td><td class='full'>Radio Altimeter</td><td class='description'>Measures height above terrain using radio waves</td></tr>
+<tr data-search='ADF Automatic Direction Finder'><td class='abbrev'>ADF</td><td class='full'>Automatic Direction Finder</td><td class='description'>Navigational aid that uses NDB signals</td></tr>
+<tr data-search='VOR VHF Omnidirectional Range'><td class='abbrev'>VOR</td><td class='full'>VHF Omnidirectional Range</td><td class='description'>Radio navigation system providing bearing information</td></tr>
+<tr data-search='DME Distance Measuring Equipment'><td class='abbrev'>DME</td><td class='full'>Distance Measuring Equipment</td><td class='description'>Measures slant range distance to a navigation aid</td></tr>
+<tr data-search='ILS Instrument Landing System'><td class='abbrev'>ILS</td><td class='full'>Instrument Landing System</td><td class='description'>Precision approach and landing guidance system</td></tr>
+<tr data-search='LOC Localizer'><td class='abbrev'>LOC</td><td class='full'>Localizer</td><td class='description'>Horizontal guidance component of ILS</td></tr>
+<tr data-search='GS Glideslope'><td class='abbrev'>GS</td><td class='full'>Glideslope</td><td class='description'>Vertical guidance component of ILS</td></tr>
+<tr data-search='AT Auto Throttle'><td class='abbrev'>AT</td><td class='full'>Auto Throttle</td><td class='description'>Automatically controls engine thrust to maintain selected speeds</td></tr>
+<tr data-search='AP Autopilot'><td class='abbrev'>AP</td><td class='full'>Autopilot</td><td class='description'>Automatically controls aircraft attitude and flight path</td></tr>
+<tr data-search='FD Flight Director'><td class='abbrev'>FD</td><td class='full'>Flight Director</td><td class='description'>Provides visual guidance to follow a flight path</td></tr>
+<tr data-search='ICE DET Ice Detection'><td class='abbrev'>ICE DET</td><td class='full'>Ice Detection</td><td class='description'>System that detects ice accumulation on aircraft surfaces</td></tr>
+<tr data-search='WING ANTI-ICE Wing Anti-Ice'><td class='abbrev'>WING ANTI-ICE</td><td class='full'>Wing Anti-Ice</td><td class='description'>System that prevents ice formation on wing leading edges</td></tr>
+<tr data-search='ENG ANTI-ICE Engine Anti-Ice'><td class='abbrev'>ENG ANTI-ICE</td><td class='full'>Engine Anti-Ice</td><td class='description'>Prevents ice formation on engine inlets and cowlings</td></tr>
+<tr data-search='PROP DEICE Propeller Deice'><td class='abbrev'>PROP DEICE</td><td class='full'>Propeller Deice</td><td class='description'>Prevents ice buildup on propeller blades</td></tr>
+<tr data-search='WINDSHIELD HEAT Windshield Heat'><td class='abbrev'>WINDSHIELD HEAT</td><td class='full'>Windshield Heat</td><td class='description'>Prevents ice and fog on cockpit windows</td></tr>
+<tr data-search='PITOT HEAT Pitot Heat'><td class='abbrev'>PITOT HEAT</td><td class='full'>Pitot Heat</td><td class='description'>Prevents ice formation on pitot tubes</td></tr>
+<tr data-search='STATIC PORT HEAT Static Port Heat'><td class='abbrev'>STATIC PORT HEAT</td><td class='full'>Static Port Heat</td><td class='description'>Prevents ice blockage of static air pressure ports</td></tr>
+<tr data-search='TAIL DEICE Tail Deice'><td class='abbrev'>TAIL DEICE</td><td class='full'>Tail Deice</td><td class='description'>Prevents ice accumulation on horizontal stabilizer leading edges</td></tr>
+<tr data-search='WIPER Windshield Wiper'><td class='abbrev'>WIPER</td><td class='full'>Windshield Wiper</td><td class='description'>Clears precipitation from cockpit windows</td></tr>
+
+<!-- Additional Abbreviations -->
+<tr data-search='ICE DET Ice Detection'><td class='abbrev'>ICE DET</td><td class='full'>Ice Detection</td><td class='description'>System that detects ice accumulation on aircraft surfaces</td></tr>
+<tr data-search='ICE PROT Ice Protection'><td class='abbrev'>ICE PROT</td><td class='full'>Ice Protection</td><td class='description'>System that prevents or removes ice accumulation on critical surfaces</td></tr>
+<tr data-search='WING ANTI-ICE Wing Anti-Ice'><td class='abbrev'>WING ANTI-ICE</td><td class='full'>Wing Anti-Ice</td><td class='description'>System that prevents ice formation on wing leading edges</td></tr>
+<tr data-search='ENG ANTI-ICE Engine Anti-Ice'><td class='abbrev'>ENG ANTI-ICE</td><td class='full'>Engine Anti-Ice</td><td class='description'>System that prevents ice formation on engine inlets</td></tr>
+<tr data-search='PROP DEICE Propeller Deice'><td class='abbrev'>PROP DEICE</td><td class='full'>Propeller Deice</td><td class='description'>System that prevents ice accumulation on propeller blades</td></tr>
+<tr data-search='WINDOW HEAT Window Heat'><td class='abbrev'>WINDOW HEAT</td><td class='full'>Window Heat</td><td class='description'>Electrical heating system for cockpit windows to prevent fogging and icing</td></tr>
+<tr data-search='PITOT HEAT Pitot Heat'><td class='abbrev'>PITOT HEAT</td><td class='full'>Pitot Heat</td><td class='description'>Heating element that prevents ice formation on pitot tubes</td></tr>
+<tr data-search='STATIC PORT HEAT Static Port Heat'><td class='abbrev'>STATIC PORT HEAT</td><td class='full'>Static Port Heat</td><td class='description'>Prevents ice blockage of static air pressure ports</td></tr>
+<tr data-search='TAIL DEICE Tail Deice'><td class='abbrev'>TAIL DEICE</td><td class='full'>Tail Deice</td><td class='description'>System that prevents ice accumulation on horizontal stabilizer</td></tr>
+<tr data-search='WASH Windshield Wash'><td class='abbrev'>WASH</td><td class='full'>Windshield Wash</td><td class='description'>Cleans cockpit windows using fluid</td></tr>
+<tr data-search='DEFOG Defog System'><td class='abbrev'>DEFOG</td><td class='full'>Defog System</td><td class='description'>Prevents fogging of cockpit windows</td></tr>
+<tr data-search='CABIN PRESS Cabin Pressure'><td class='abbrev'>CABIN PRESS</td><td class='full'>Cabin Pressure</td><td class='description'>Controls aircraft cabin pressurization</td></tr>
+<tr data-search='OUTFLOW VALVE Outflow Valve'><td class='abbrev'>OUTFLOW VALVE</td><td class='full'>Outflow Valve</td><td class='description'>Controls cabin pressure by regulating air outflow</td></tr>
+<tr data-search='DITCHING Ditching Mode'><td class='abbrev'>DITCHING</td><td class='full'>Ditching Mode</td><td class='description'>Secures aircraft for emergency water landing</td></tr>
+<tr data-search='OXYGEN Oxygen System'><td class='abbrev'>OXYGEN</td><td class='full'>Oxygen System</td><td class='description'>Provides emergency oxygen for crew and passengers</td></tr>
+<tr data-search='SMOKE DET Smoke Detection'><td class='abbrev'>SMOKE DET</td><td class='full'>Smoke Detection</td><td class='description'>Detects smoke in aircraft compartments</td></tr>
+<tr data-search='FIRE DET Fire Detection'><td class='abbrev'>FIRE DET</td><td class='full'>Fire Detection</td><td class='description'>Monitors for engine and APU fires</td></tr>
+<tr data-search='FIRE EXT Fire Extinguisher'><td class='abbrev'>FIRE EXT</td><td class='full'>Fire Extinguisher</td><td class='description'>Controls fire suppression systems</td></tr>
+<tr data-search='NAV Navigation Lights'><td class='abbrev'>NAV</td><td class='full'>Navigation Lights</td><td class='description'>Position and anti-collision lighting system that includes red (port), green (starboard), and white (tail) lights for aircraft visibility</td></tr>
+<tr data-search='BEACON Beacon Light'><td class='abbrev'>BEACON</td><td class='full'>Beacon Light</td><td class='description'>Red flashing anti-collision light on aircraft top and bottom, activated when engines are running or about to be started</td></tr>
+<tr data-search='STROBE Strobe Light'><td class='abbrev'>STROBE</td><td class='full'>Strobe Light</td><td class='description'>High-intensity white flashing light on wingtips and tail, used for collision avoidance and visibility in low-light conditions</td></tr>
+<tr data-search='LOGO LT Logo Light'><td class='abbrev'>LOGO LT</td><td class='full'>Logo Light</td><td class='description'>White light that illuminates the vertical stabilizer logo for ground and low-altitude visibility</td></tr>
+<tr data-search='WING LT Wing Light'><td class='abbrev'>WING LT</td><td class='full'>Wing Light</td><td class='description'>White light that illuminates the wing leading edge for inspection of ice accumulation and general condition</td></tr>
+<tr data-search='LANDING LT Landing Light'><td class='abbrev'>LANDING LT</td><td class='full'>Landing Light</td><td class='description'>High-intensity white light mounted on wings or fuselage, used during takeoff, landing, and taxiing for better visibility</td></tr>
+<tr data-search='TAXI LT Taxi Light'><td class='abbrev'>TAXI LT</td><td class='full'>Taxi Light</td><td class='description'>Forward-facing white light used during ground operations to illuminate taxiways and runways</td></tr>
+<tr data-search='DOME LT Dome Light'><td class='abbrev'>DOME LT</td><td class='full'>Dome Light</td><td class='description'>Overhead lighting in the cockpit that provides general illumination for the flight deck, essential for night operations and low-light conditions. It ensures proper visibility of controls and instruments without causing glare on the windscreen.</td></tr>
+<tr data-search='PANEL LT Panel Light'><td class='abbrev'>PANEL LT</td><td class='full'>Panel Light</td><td class='description'>Adjustable lighting system that illuminates the instrument panel, allowing pilots to read gauges and controls in low-light conditions without affecting night vision. Typically features dimming controls for optimal visibility.</td></tr>
+<tr data-search='CABIN LT Cabin Light'><td class='abbrev'>CABIN LT</td><td class='full'>Cabin Light</td><td class='description'>Controls the main passenger cabin lighting system, including reading lights, overhead lighting, and emergency lighting. Includes dimming capabilities and night lighting modes to maintain a comfortable cabin environment during all phases of flight.</td></tr>
+<tr data-search='ENG FIRE Engine Fire'><td class='abbrev'>ENG FIRE</td><td class='full'>Engine Fire</td><td class='description'>Warning system that detects and alerts the crew to engine fires. Includes fire detection loops, warning lights, and fire suppression systems. When activated, it triggers fire extinguishing procedures and may automatically shut down affected systems.</td></tr>
+<tr data-search='APU FIRE APU Fire'><td class='abbrev'>APU FIRE</td><td class='full'>APU Fire</td><td class='description'>Dedicated fire detection and suppression system for the Auxiliary Power Unit. Monitors for fire conditions in the APU compartment and provides visual and aural warnings. Includes fire extinguishing capability that can be activated from the flight deck.</td></tr>
+<tr data-search='FIRE TEST Fire Test'><td class='abbrev'>FIRE TEST</td><td class='full'>Fire Test</td><td class='description'>Allows crew to test the functionality of fire detection and warning systems. When activated, it checks the integrity of fire detection loops, warning lights, and aural alerts. A required part of pre-flight checks to ensure all fire protection systems are operational.</td></tr>
+<tr data-search='CARGO FIRE Cargo Fire Detection'><td class='abbrev'>CARGO FIRE</td><td class='full'>Cargo Fire Detection</td><td class='description'>Monitors cargo compartments for fire or smoke using smoke detectors and heat sensors. Provides early warning of potential fire hazards in inaccessible areas. May be connected to fire suppression systems to control fires without crew intervention.</td></tr>
+<tr data-search='DISCH Discharge Indicator'><td class='abbrev'>DISCH</td><td class='full'>Discharge Indicator</td><td class='description'>Indicates when a fire extinguishing agent has been discharged into a designated area. Shows the status of fire suppression systems and helps crew monitor the effectiveness of firefighting actions. May show pressure or chemical release confirmation.</td></tr>
+<tr data-search='AP Autopilot'><td class='abbrev'>AP</td><td class='full'>Autopilot</td><td class='description'>Automated flight control system that can maintain aircraft attitude, altitude, heading, and speed without constant pilot input. Can follow pre-programmed flight plans and includes multiple modes for different phases of flight. Reduces pilot workload during long flights.</td></tr>
+<tr data-search='FD Flight Director'><td class='abbrev'>FD</td><td class='full'>Flight Director</td><td class='description'>Flight instrument that provides visual guidance to the pilot, showing the required pitch and roll inputs to follow a specific flight path. Works with navigation systems to guide the aircraft along the intended route, approach path, or holding pattern.</td></tr>
+<tr data-search='YD Yaw Damper'><td class='abbrev'>YD</td><td class='full'>Yaw Damper</td><td class='description'>Automatic system that detects and counteracts yawing oscillations (Dutch roll) using the rudder. Improves passenger comfort and reduces structural stress on the airframe. Particularly important in swept-wing aircraft that are prone to Dutch roll tendencies.</td></tr>
+<tr data-search='TO/GA Takeoff / Go-Around'><td class='abbrev'>TO/GA</td><td class='full'>Takeoff / Go-Around</td><td class='description'>Button or switch that commands maximum available thrust for takeoff or go-around procedures. When activated, it sets the engines to a pre-determined thrust setting and configures flight guidance systems for the appropriate phase of flight.</td></tr>
+<tr data-search='HDG Heading'><td class='abbrev'>HDG</td><td class='full'>Heading</td><td class='description'>Flight control mode that maintains the aircraft's current magnetic heading. When engaged, the autopilot will adjust the aircraft's bank angle to maintain the selected heading, compensating for wind drift. Essential for VFR navigation and ATC vectoring.</td></tr>
+<tr data-search='ALT Altitude Hold'><td class='abbrev'>ALT</td><td class='full'>Altitude Hold</td><td class='description'>Autopilot mode that maintains the aircraft at a specific barometric altitude. The system automatically adjusts pitch and power to hold the selected altitude, compensating for atmospheric changes and weight variations. Can be overridden by the pilot for altitude changes.</td></tr>
+<tr data-search='V/S Vertical Speed'><td class='abbrev'>V/S</td><td class='full'>Vertical Speed</td><td class='description'>Flight control mode that maintains a specific rate of climb or descent in feet per minute. The pilot selects the desired vertical speed, and the autopilot adjusts the aircraft's pitch to maintain that rate until reaching a new altitude or the mode is changed.</td></tr>
+<tr data-search='LNAV Lateral Navigation'><td class='abbrev'>LNAV</td><td class='full'>Lateral Navigation</td><td class='description'>Autopilot mode that follows the lateral (left/right) path of the active flight plan. The aircraft will automatically follow the programmed route, making turns at waypoints and following airways or approach procedures as defined in the FMS.</td></tr>
+<tr data-search='VNAV Vertical Navigation'><td class='abbrev'>VNAV</td><td class='full'>Vertical Navigation</td><td class='description'>Advanced autopilot mode that manages the aircraft's vertical flight path according to the flight plan. Controls altitude, airspeed, and thrust to meet altitude restrictions at waypoints, optimize fuel efficiency, and follow standard departure/arrival procedures.</td></tr>
+<tr data-search='SPD / MACH Speed / Mach'><td class='abbrev'>SPD / MACH</td><td class='full'>Speed / Mach</td><td class='description'>Autopilot mode that maintains either indicated airspeed (SPD) or Mach number (MACH). At lower altitudes, airspeed is typically used, while at higher altitudes, Mach number becomes the standard reference. The system automatically switches between them based on altitude or pilot selection.</td></tr>
+<tr data-search='FLCH Flight Level Change'><td class='abbrev'>FLCH</td><td class='full'>Flight Level Change</td><td class='description'>Autopilot mode that changes altitude while maintaining a specific airspeed or Mach number. The system adjusts thrust to maintain the target speed while the aircraft climbs or descends. Ideal for efficient altitude changes during cruise or when cleared to a new flight level by ATC.</td></tr>
+<tr data-search='TRIM Trim'><td class='abbrev'>TRIM</td><td class='full'>Trim</td><td class='description'>System that adjusts the neutral position of flight control surfaces to reduce control forces and maintain desired attitude without constant control input. Includes elevator, aileron, and rudder trim. Can be manually adjusted or automatically controlled by the autopilot.</td></tr>
+<tr data-search='FLAP Flap'><td class='abbrev'>FLAP</td><td class='full'>Flap</td><td class='description'>High-lift devices on the wings that increase lift and drag when extended. Used during takeoff and landing to allow slower approach speeds and steeper descent angles. Different flap settings (degrees of extension) are used for various phases of flight and performance requirements.</td></tr>
+<tr data-search='SPOILER / SPEED BRAKE Speed Brake'><td class='abbrev'>SPOILER</td><td class='full'>Speed Brake</td><td class='description'>Aerodynamic surfaces that can be deployed to increase drag and reduce lift. Used to control airspeed during descent, increase descent rate without gaining excessive speed, and assist with braking after touchdown. Some aircraft combine spoilers and speed brakes into a single system.</td></tr>
+<tr data-search='NAV 1/2 Navigation Radio'><td class='abbrev'>NAV 1/2</td><td class='full'>Navigation Radio</td><td class='description'>Dual VHF navigation receivers that tune and receive signals from VOR, VOR/DME, ILS, and localizer transmitters. Each radio can be independently tuned to different navigation aids, allowing for cross-checking of position and approaches. Displays course deviation and glideslope information.</td></tr>
+<tr data-search='COMM 1/2 Communication Radio'><td class='abbrev'>COMM 1/2</td><td class='full'>Communication Radio</td><td class='description'>Dual VHF communication transceivers for air traffic control communications. Allows monitoring of two frequencies simultaneously and quick switching between frequencies. Includes controls for frequency selection, volume, and squelch. Essential for maintaining contact with ATC and other aircraft.</td></tr>
+<tr data-search='ADF Automatic Direction Finder'><td class='abbrev'>ADF</td><td class='full'>Automatic Direction Finder</td><td class='description'>Radio navigation instrument that indicates the direction to a non-directional beacon (NDB) ground transmitter. Displays the relative bearing to the station and can be used for navigation, holding, and non-precision approaches. Being phased out in favor of GPS in many regions.</td></tr>
+<tr data-search='XPDR Transponder'><td class='abbrev'>XPDR</td><td class='full'>Transponder</td><td class='description'>Radio transceiver that responds to secondary surveillance radar (SSR) interrogations from ATC. Transmits a four-digit squawk code and, in Mode C/S, the aircraft's pressure altitude. Essential for air traffic control radar identification and separation. Required in controlled airspace.</td></tr>
+<tr data-search='TCAS Traffic Collision Avoidance System'><td class='abbrev'>TCAS</td><td class='full'>Traffic Collision Avoidance System</td><td class='description'>Onboard system that monitors nearby aircraft equipped with transponders. Issues traffic advisories (TA) and resolution advisories (RA) to help pilots avoid mid-air collisions. TCAS II provides vertical resolution commands (climb/descend) when a collision threat is detected.</td></tr>
+<tr data-search='GPWS Ground Proximity Warning System'><td class='abbrev'>GPWS</td><td class='full'>Ground Proximity Warning System</td><td class='description'>System that alerts pilots if the aircraft is in immediate danger of flying into the ground or an obstacle. Uses radio altimeter, GPS, and terrain databases to provide early warnings. Includes modes for excessive descent rate, terrain closure, altitude loss after takeoff, and unsafe terrain clearance.</td></tr>
+<tr data-search='WX RADAR Weather Radar'><td class='abbrev'>WX RADAR</td><td class='full'>Weather Radar</td><td class='description'>Forward-looking radar system that detects precipitation intensity and storm cells. Displays weather patterns in color-coded formats to help pilots navigate around hazardous weather. Modern systems can also detect wind shear and turbulence. Essential for flight planning and in-flight weather avoidance.</td></tr>
+<tr data-search='FMS Flight Management System'><td class='abbrev'>FMS</td><td class='full'>Flight Management System</td><td class='description'>Integrated avionics system that automates navigation, performance, and flight planning. Combines data from multiple sensors to determine position, calculate optimal routes, and manage fuel efficiency. Interfaces with autopilot and flight director systems. Central to modern glass cockpits.</td></tr>
+<tr data-search='CDU Control Display Unit'><td class='abbrev'>CDU</td><td class='full'>Control Display Unit</td><td class='description'>Interface unit for the Flight Management System, typically featuring a keyboard and display screen. Allows pilots to enter and modify flight plans, access navigation databases, monitor system status, and program performance parameters. The primary means of interacting with the FMS.</td></tr>
+<tr data-search='IRS Inertial Reference System'><td class='abbrev'>IRS</td><td class='full'>Inertial Reference System</td><td class='description'>Navigation system that uses laser gyroscopes and accelerometers to calculate the aircraft's position, attitude, and velocity without external references. Requires alignment before flight and provides highly accurate short-term position data. Often integrated with GPS for improved accuracy.</td></tr>
+<tr data-search='GPS Global Positioning System'><td class='abbrev'>GPS</td><td class='full'>Global Positioning System</td><td class='description'>Satellite-based navigation system that provides precise position, velocity, and time information. Used for en-route navigation, terminal procedures, and precision approaches. Modern systems include WAAS/EGNOS for improved accuracy and integrity, enabling LPV approaches with vertical guidance.</td></tr>
+<tr data-search='SEAT BELTS Seat Belts Sign'><td class='abbrev'>SEAT BELTS</td><td class='full'>Seat Belts Sign</td><td class='description'>Illuminated sign in the cabin that indicates when passengers should remain seated with seat belts fastened. Controlled from the flight deck and typically activated during taxi, takeoff, landing, and when expecting turbulence. Part of the aircraft's safety systems.</td></tr>
+<tr data-search='NO SMOKING No Smoking Sign'><td class='abbrev'>NO SMOKING</td><td class='full'>No Smoking Sign</td><td class='description'>Illuminated sign indicating that smoking is prohibited. Required to be on during all phases of flight on most commercial aircraft. Part of the aircraft's fire prevention system and a regulatory requirement. Often combined with the seat belt sign controls.</td></tr>
+<tr data-search='EMER EXIT LT Emergency Exit Lights'><td class='abbrev'>EMER EXIT LT</td><td class='full'>Emergency Exit Lights</td><td class='description'>Illumination system that marks emergency exits and escape paths in the cabin. Automatically activates during emergencies or power failures using battery backup. Includes floor-level lighting to guide passengers to exits in smoke-filled conditions. Tested during pre-flight checks.</td></tr>
+<tr data-search='EVAC CMD Evacuation Command'><td class='abbrev'>EVAC CMD</td><td class='full'>Evacuation Command</td><td class='description'>Switch or button that activates the aircraft's emergency evacuation system. When activated, it typically arms emergency slides, activates emergency lighting, and may sound an alarm. Used only when immediate evacuation is necessary and should be confirmed by both pilots.</td></tr>
+<tr data-search='OXY Oxygen System'><td class='abbrev'>OXY</td><td class='full'>Oxygen System</td><td class='description'>Provides supplemental oxygen to crew and passengers during cabin depressurization or smoke/fumes events. Includes crew masks with microphones, passenger drop-down masks, and portable oxygen bottles. Crew masks typically provide 100% oxygen on demand or pressure demand.</td></tr>
+<tr data-search='LDG GEAR Landing Gear Lever'><td class='abbrev'>LDG GEAR</td><td class='full'>Landing Gear Lever</td><td class='description'>Control handle that raises and lowers the aircraft's landing gear. Typically has three positions: UP, OFF, and DOWN. Includes safety features like squat switches and gear warning systems. The lever is often shaped like a wheel to prevent confusion with other controls.</td></tr>
+<tr data-search='AUTO BRK Auto Brake'><td class='abbrev'>AUTO BRK</td><td class='full'>Auto Brake</td><td class='description'>System that automatically applies the brakes after landing or during a rejected takeoff. Can be set to different deceleration rates. Reduces pilot workload during landing and ensures consistent braking. Automatically disengages when reverse thrust is selected or manual braking is applied.</td></tr>
+<tr data-search='ANTISKID Anti-Skid'><td class='abbrev'>ANTISKID</td><td class='full'>Anti-Skid</td><td class='description'>System that prevents wheel lockup during braking by modulating brake pressure. Improves braking efficiency and directional control, especially on wet or slippery runways. Works in conjunction with the auto-brake system and is active during all ground operations.</td></tr>
+<tr data-search='PARK BRK Parking Brake'><td class='abbrev'>PARK BRK</td><td class='full'>Parking Brake</td><td class='description'>System that applies pressure to the main landing gear brakes to prevent aircraft movement when parked. Should be set whenever the aircraft is parked and engines are shut down. Also used during engine start to prevent aircraft movement. Must be released before taxi.</td></tr>
+<tr data-search='BRAKE TEMP Brake Temperature'><td class='abbrev'>BRAKE TEMP</td><td class='full'>Brake Temperature</td><td class='description'>Monitoring system that displays the temperature of the wheel brakes. High brake temperatures can indicate excessive braking and may require a cooling period before the next takeoff. Critical for flight safety as overheated brakes can cause tire explosions or brake fires.</td></tr>
+<tr data-search='ON Power On'><td class='abbrev'>ON</td><td class='full'>Power On</td><td class='description'>Position on a switch that activates a system or component. When selected, power is supplied to the associated system. Should only be activated when required for operation and when all preconditions for system activation are met. Part of standard checklists.</td></tr>
+<tr data-search='OFF Power Off'><td class='abbrev'>OFF</td><td class='full'>Power Off</td><td class='description'>Position on a switch that deactivates a system or component. Stops power supply to the associated system. Used during normal shutdown procedures, in emergencies, or when a system is not required. Some critical systems may have protective features that prevent accidental shutdown.</td></tr>
+<tr data-search='ARM Arm / Armed'><td class='abbrev'>ARM</td><td class='full'>Arm / Armed</td><td class='description'>Switch position that prepares a system for automatic activation when certain conditions are met. For example, arming the speed brake system allows automatic deployment when reverse thrust is selected after landing. The armed state is typically indicated by an amber light.</td></tr>
+<tr data-search='DISARM Disarm'><td class='abbrev'>DISARM</td><td class='full'>Disarm</td><td class='description'>Action to deactivate or prevent automatic system activation. Used when automatic system operation is not desired or could be hazardous. For example, disarming the auto-spoiler system prevents automatic spoiler deployment after landing. Should be done in accordance with checklists and procedures.</td></tr>
+<tr data-search='PUSH Push Button'><td class='abbrev'>PUSH</td><td class='full'>Push Button</td><td class='description'>Momentary switch that activates a function when pressed. May be backlit or labeled for identification. Used for actions like testing systems, acknowledging warnings, or activating time-limited functions. Some push buttons have protective covers to prevent accidental activation.</td></tr>
+<tr data-search='PULL Pull Handle'><td class='abbrev'>PULL</td><td class='full'>Pull Handle</td><td class='description'>Manually operated control that requires pulling to activate critical or emergency systems. Often has a protective cover and may be brightly colored (typically red or yellow). Used for fire extinguishers, emergency fuel shutoff, or other safety-critical functions. Requires deliberate action to operate.</td></tr>
+<tr data-search='TEST Test'><td class='abbrev'>TEST</td><td class='full'>Test</td><td class='description'>Function that verifies the proper operation of a system or component. When activated, the system performs a self-check of its components and indicators. Used during pre-flight checks and maintenance. Successful test is typically indicated by specific light patterns or display messages.</td></tr>
+<tr data-search='RESET Reset'><td class='abbrev'>RESET</td><td class='full'>Reset</td><td class='description'>Button or switch that restores a system to its initial state or clears a fault indication. May be used to recover from system errors or warnings after the underlying issue has been addressed. Should only be used in accordance with approved procedures and checklists.</td></tr>
+<tr data-search='FAULT Fault Indicator'><td class='abbrev'>FAULT</td><td class='full'>Fault Indicator</td><td class='description'>Warning light or message that indicates a system malfunction or abnormal condition. Typically illuminated in amber or red, depending on severity. May be accompanied by an aural warning. Requires crew attention and may necessitate specific procedures outlined in the Quick Reference Handbook (QRH).</td></tr>
+<tr data-search='STAT System Status Page (Boeing)'><td class='abbrev'>STAT</td><td class='full'>System Status Page (Boeing)</td><td class='description'>Displays system status and health monitoring information</td></tr><tr data-search='MAINT Maintenance Page (Airbus/Boeing/Embraer references)'><td class='abbrev'>MAINT</td><td class='full'>Maintenance Page (Airbus/Boeing/Embraer references)</td><td class='description'>Provides maintenance and diagnostic information for ground crew</td></tr>
+<tr data-search='PTU Power Transfer Unit (some types specific implementation)'><td class='abbrev'>PTU</td><td class='full'>Power Transfer Unit (some types specific implementation)</td><td class='description'>Transfers hydraulic power between systems when needed</td></tr><tr data-search='IDG 1/2 Integrated Drive Generator 1 / 2 (Airbus/Boeing specific)'><td class='abbrev'>IDG 1/2</td><td class='full'>Integrated Drive Generator 1 / 2 (Airbus/Boeing specific)</td><td class='description'>Engine-driven generators that provide electrical power</td></tr>
+<tr data-search='GT GEN Ground Generator (787)'><td class='abbrev'>GT GEN</td><td class='full'>Ground Generator (787)</td><td class='description'>Ground power generator for the 787 Dreamliner</td></tr>
+<tr data-search='AUTO SLAT Auto slat function (some types)'><td class='abbrev'>AUTO SLAT</td><td class='full'>Auto slat function (some types)</td><td class='description'>Automatically deploys slats for increased lift during takeoff and landing</td></tr>
+<tr data-search='ELEC EMER Electrical Emergency Mode (787)'><td class='abbrev'>ELEC EMER</td><td class='full'>Electrical Emergency Mode (787)</td><td class='description'>Activates emergency electrical configuration on the 787 Dreamliner</td></tr>
+<tr data-search='EVAC Evacuation Signal (airline-specific)'><td class='abbrev'>EVAC</td><td class='full'>Evacuation Signal (airline-specific)</td><td class='description'>Cabin evacuation alert system for emergency situations</td></tr>
+<tr data-search='APU LCV APU Load Control Valve (CRJ)'><td class='abbrev'>APU LCV</td><td class='full'>APU Load Control Valve (CRJ)</td><td class='description'>Controls the APU load and prevents overloading in CRJ aircraft</td></tr>
+<tr data-search='BP PUMP Booster Pump (specific models)'><td class='abbrev'>BP PUMP</td><td class='full'>Booster Pump (specific models)</td><td class='description'>Provides additional fuel pressure to the engines when needed</td></tr>
+<tr data-search='J-10C PL-15E Long-Range AAM (J-10C)'><td class='abbrev'>PL-15E</td><td class='full'>Long-Range Air-to-Air Missile (J-10C)</td><td class='description'>Chinese beyond-visual-range air-to-air missile with active radar homing</td></tr>
+<tr data-search='CARGO FAN Cargo Fan (some types)'><td class='abbrev'>CARGO FAN</td><td class='full'>Cargo Fan (some types)</td><td class='description'>Ventilation system for the aircraft's cargo compartment</td></tr>
+<tr data-search='FUEL CONFIG Fuel Configuration Page (A320/A330)'><td class='abbrev'>FUEL CONFIG</td><td class='full'>Fuel Configuration Page (A320/A330)</td><td class='description'>Displays current fuel system configuration and status</td></tr>
+<tr data-search='FDR Flight Data Recorder (label variant)'><td class='abbrev'>FDR</td><td class='full'>Flight Data Recorder (label variant)</td><td class='description'>Records flight parameters and systems data for incident investigation</td></tr>
+<tr data-search='CVR ERASE CVR Erase (some types)'><td class='abbrev'>CVR ERASE</td><td class='full'>CVR Erase (some types)</td><td class='description'>Erases the Cockpit Voice Recorder data (requires ground power)</td></tr></tbody></table></div>
+
+<script>
+function filterTables(){
+    const q = document.getElementById('search').value.toLowerCase();
+    document.querySelectorAll('tbody tr').forEach(r => {
+        const s = r.getAttribute('data-search') || '';
+        r.classList.toggle('row-hidden', !s.toLowerCase().includes(q));
+    });
+}
+</script>
+</body></html>
